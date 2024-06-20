@@ -6,11 +6,11 @@ location     = "uksouth"
 resource_groups = {
   default-uks = {
     prefix   = "rg"
-    location = "uks"
+    location = "uksouth"
   }
   network-uks = {
     prefix   = "rg-network"
-    location = "uks"
+    location = "uksouth"
   }
 }
 

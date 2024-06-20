@@ -80,3 +80,24 @@ variable "private_dns" {
   }))
   description = "Complete details of private_dns."
 }
+
+variable "storage_profile" {
+  type = object({
+    name                              = string
+    rg_key                            = string
+    account_kind                      = string
+    account_tier                      = string
+    account_replication_type          = string
+    min_tls_version                   = string
+    shared_access_key_enabled         = bool
+    blob_soft_delete_retention_days   = optional(number, 7)
+    container_delete_retention_days   = optional(number, 7)
+    blob_restore_days                 = optional(number)
+    enable_versioning                 = optional(bool, false)
+    change_feed_enabled               = optional(bool, false)
+    infrastructure_encryption_enabled = optional(bool, false)
+    containers_list                   = optional(list(object({ name = string, access_type = string })), [])
+    vnet_key                          = optional(string, "vnet-uks")
+  })
+  description = "Specifies the details of the Storage Account."
+}

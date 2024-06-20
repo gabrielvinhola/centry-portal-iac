@@ -9,9 +9,6 @@ terraform {
       source  = "hashicorp/random"
       version = "3.4.3"
     }
-    azapi = {
-      source = "Azure/azapi"
-    }
   }
 
   cloud {}

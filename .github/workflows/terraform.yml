@@ -193,7 +193,7 @@ jobs:
         - name: Setup Terraform
           uses: hashicorp/setup-terraform@v2
           with:
-            terraform_version: '1.8.2'
+            terraform_version: '1.8.5'
             cli_config_credentials_token: ${{ secrets.TFE_TOKEN }}
 
         - name: Terraform Init

@@ -62,16 +62,16 @@ jobs:
           tenant-id: ${{ secrets.ARM_TENANT_ID }}
           subscription-id: ${{ secrets.ARM_SUBSCRIPTION_ID }}
 
-      # - name: Setup Terraform
-      #   uses: hashicorp/setup-terraform@v2
-      #   with:
-      #     terraform_version: "1.7.3"
-      #     cli_config_credentials_token: ${{ secrets.TFE_TOKEN }}
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v2
+        with:
+          terraform_version: "1.7.3"
+          cli_config_credentials_token: ${{ secrets.TFE_TOKEN }}
 
-      # - name: Terraform version
-      #   id: version
-      #   shell: bash
-      #   run: terraform version
+      - name: Terraform version
+        id: version
+        shell: bash
+        run: terraform version
 
       - name: Terraform Init
         shell: bash

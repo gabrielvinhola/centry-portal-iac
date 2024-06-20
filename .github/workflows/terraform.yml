@@ -53,7 +53,7 @@ jobs:
     environment: ${{ matrix.environment }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Azure Login
         uses: azure/login@v1
@@ -65,7 +65,7 @@ jobs:
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v2
         with:
-          terraform_version: "1.8.5"
+          terraform_version: "1.7.3"
           cli_config_credentials_token: ${{ secrets.TFE_TOKEN }}
 
       - name: Terraform version
@@ -74,6 +74,7 @@ jobs:
         run: terraform version
 
       - name: Terraform Init
+        id: init
         shell: bash
         run: terraform init -no-color
         env:
@@ -87,18 +88,19 @@ jobs:
       - name: Terraform Plan
         id: plan
         run: |
-          set -o pipefail; terraform plan --var-file="./environments/${{ matrix.environment }}.tfvars" \
+          terraform plan --var-file="./environments/${{ matrix.environment }}.tfvars" \
           -out="${{ matrix.environment }}.plan" \
-          -no-color | egrep -v 'password|other_sensitive_attribute'
+          -input=false \
+          -no-color
 
-      - name: Terraform Plan Status
-        if: steps.plan.outcome == 'failure'
-        run: exit 1
+      - name: Truncate Plan
+        run: |
+          echo "${{ steps.plan.outputs.stdout }}" | grep -v "Refreshing state" > /tmp/plan.out
+          npm install fs
 
-      - uses: actions/github-script@v6
+      - name: Publish Plan to PR comment
+        uses: actions/github-script@v6
         if: github.event_name == 'pull_request'
-        env:
-          PLAN: "${{ steps.plan.outputs.stdout }}"
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
@@ -108,21 +110,30 @@ jobs:
               issue_number: context.issue.number,
             })
             const botComment = comments.find(comment => {
-              return comment.user.type === 'Bot' && comment.body.includes('Plan status')
+              return comment.user.type === 'Bot' && comment.body.includes('${{ matrix.environment }} Status:')
             })
-
-            const output = `Plan status: \`${{ steps.plan.outcome }}\`
+            const run_url = process.env.GITHUB_SERVER_URL + '/' + process.env.GITHUB_REPOSITORY + '/actions/runs/' + process.env.GITHUB_RUN_ID
+            const run_link = '<a href="' + run_url + '">Actions</a>.'
+            const fs = require('fs')
+            const plan_file = fs.readFileSync('/tmp/plan.out', 'utf8')
+            const plan = plan_file.length > 65000 ? plan_file.toString().substring(0, 65000) + " ..." : plan_file
+            const truncated_message = plan_file.length > 65000 ? "Output is too long and was truncated. You can read full Plan in " + run_link + "<br /><br />" : ""
+            const output = `## ${{ matrix.environment }} Status:
+            #### Terraform Initialization ⚙️\`${{ steps.init.outcome }}\`
+            #### Terraform Validation 🤖\`${{ steps.validate.outcome }}\`
+            #### Terraform Plan 📖\`${{ steps.plan.outcome }}\`
             <details>
 
             \`\`\`\n
-            ${process.env.PLAN}
+            ${plan}
             \`\`\`
 
             </details>
 
-            *Pusher: @${{ github.actor }}, Action: \`${{ github.event_name }}\`, Working Directory: \`${{ env.tf_actions_working_dir }}\`, Workflow: \`${{ github.workflow }}\`*`;
+            ${truncated_message}
 
-            // 3. If we have a comment, update it, otherwise create a new one
+            *Pushed-By: @${{ github.actor }}, Action: \`${{ github.event_name }}\`, Workflow: \`${{ github.workflow }}\`*`;
+
             if (botComment) {
               github.rest.issues.updateComment({
                 owner: context.repo.owner,
@@ -145,5 +156,4 @@ jobs:
           name: ${{ matrix.environment }}-plan
           path: ${{ matrix.environment }}.plan
           retention-days: 30
-
   

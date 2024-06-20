@@ -160,4 +160,61 @@ jobs:
           name: ${{ matrix.environment }}-plan
           path: ${{ matrix.environment }}.plan
           retention-days: 30
-  
+
+  apply:
+    if: github.actor != 'dependabot[bot]' && github.ref == 'refs/heads/main' && github.event_name == 'push'
+    needs:
+      - plan
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        environment:
+          - dev  
+    env:
+      ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
+      ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
+      ARM_SUBSCRIPTION_ID:  ${{ secrets.ARM_SUBSCRIPTION_ID }}
+    environment: ${{ matrix.environment }}
+    steps:
+        - uses: actions/checkout@v3
+
+        - uses: actions/download-artifact@v3
+          with:
+            name: ${{ matrix.environment }}-plan
+
+        - name: Azure Login
+          uses: azure/login@v1
+          with:
+            client-id: ${{ secrets.ARM_CLIENT_ID }}
+            tenant-id: ${{ secrets.ARM_TENANT_ID }}
+            subscription-id: ${{ secrets.ARM_SUBSCRIPTION_ID }}
+        
+        - name: Add Runner IP in Firewall Rule Vault
+          id: add_firewallrule
+          shell: bash
+          run: |
+            chmod +x ./scripts/add_fw.sh
+            ./scripts/add_fw.sh
+
+        - name: Setup Terraform
+          uses: hashicorp/setup-terraform@v2
+          with:
+            terraform_version: '1.8.2'
+            cli_config_credentials_token: ${{ secrets.TFE_TOKEN }}
+
+        - name: Terraform Init
+          shell: bash
+          run:
+            terraform init -no-color
+          env:
+            TFE_TOKEN: ${{ secrets.TFE_TOKEN }}
+            
+        - name: Terraform Apply
+          id: apply
+          run: |
+            terraform apply -no-color \
+              -compact-warnings \
+              -auto-approve \
+              ${{ matrix.environment }}.plan
+          continue-on-error: false

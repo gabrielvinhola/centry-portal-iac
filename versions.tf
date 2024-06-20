@@ -6,7 +6,8 @@ terraform {
       version = "~> 3.72.0"
     }
 
-  cloud {}
+  cloud {} 
+ }
 }
 
 provider "azurerm" {

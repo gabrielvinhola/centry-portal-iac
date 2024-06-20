@@ -190,13 +190,6 @@ jobs:
             tenant-id: ${{ secrets.ARM_TENANT_ID }}
             subscription-id: ${{ secrets.ARM_SUBSCRIPTION_ID }}
         
-        - name: Add Runner IP in Firewall Rule Vault
-          id: add_firewallrule
-          shell: bash
-          run: |
-            chmod +x ./scripts/add_fw.sh
-            ./scripts/add_fw.sh
-
         - name: Setup Terraform
           uses: hashicorp/setup-terraform@v2
           with:

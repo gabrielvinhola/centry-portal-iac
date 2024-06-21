@@ -11,7 +11,7 @@ terraform {
     }
   }
 
-  cloud {}
+  # cloud {}
 }
 
 provider "random" {}

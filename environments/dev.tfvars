@@ -204,3 +204,17 @@ backend = {
   require_assignment            = true
 }
 
+postgresql_flexible_server_name = "psqlsrv-app-dev-uks-001"
+postgres_zone                   = 1
+size                            = "D8ds_v4"
+postgres_storage_mb             = "32768"
+administrator_login             = "tstpostgresqladmin"
+postgres_sku_name               = "GeneralPurpose"
+postgresql_flexible_databases = {
+  "martendb" = {
+    charset   = "UTF8"
+    collation = "en_US.utf8"
+  }
+}
+geo_redundant_backup_enabled = true
+backup_retention_days        = 30

@@ -12,7 +12,7 @@ module "frontend" {
   settings = {
     site_config = {
       application_stack = {
-        docker_image_name   = "hello-world"
+        docker_image_name = "hello-world"
         # docker_registry_url = "https://${var.acr_name}.azurecr.io"
       }
     }
@@ -53,7 +53,7 @@ module "backend" {
   settings = {
     site_config = {
       application_stack = {
-        docker_image_name   = "hello-world"
+        docker_image_name = "hello-world"
         # docker_registry_url = "https://${var.acr_name}.azurecr.io"
       }
     }

@@ -168,3 +168,51 @@ variable "backend" {
   })
   description = "(Required) The details of filestore app service."
 }
+
+variable "postgresql_flexible_server_name" {
+  description = "Name of the postgres server"
+  type        = string
+}
+
+variable "postgres_zone" {
+  description = "zone of the postgres server"
+  type        = number
+}
+
+variable "postgres_sku_name" {
+  type        = string
+  description = "(Required) Specifies the SKU Name for this PostgreSQL Server."
+}
+
+variable "postgres_storage_mb" {
+  type        = string
+  description = "(Optional) Max storage allowed for a server"
+}
+
+variable "administrator_login" {
+  type        = string
+  description = "(Optional) The Administrator login for the PostgreSQL Server."
+}
+
+variable "postgresql_flexible_databases" {
+  type = map(object({
+    charset   = optional(string, "UTF8")
+    collation = optional(string, "en_US.UTF8")
+  }))
+  default = {}
+}
+
+variable "size" {
+  type        = string
+  description = "size of postgres server"
+}
+
+variable "geo_redundant_backup_enabled" {
+  type        = bool
+  description = "defines whether geo redundant is enabled or not for postgres server"
+}
+
+variable "backup_retention_days" {
+  type        = string
+  description = "backup_retention_days of postgres server"
+}

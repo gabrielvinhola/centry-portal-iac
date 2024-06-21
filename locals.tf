@@ -30,4 +30,5 @@ locals {
     token_refresh_extension_hours = 0
   }
 
+  dns_posgtres = "app-dev"
 }

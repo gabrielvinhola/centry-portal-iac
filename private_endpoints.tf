@@ -9,7 +9,7 @@ resource "azurerm_private_dns_zone_virtual_network_link" "this" {
   name                  = "${each.key}-link"
   resource_group_name   = module.resourcegroups[each.value.rg_key].rg_name
   private_dns_zone_name = each.value.name
-  virtual_network_id    = module.network["vnet-eus"].vnet_id
+  virtual_network_id    = module.network["vnet-uks"].vnet_id
 }
 
 module "private_endpoints" {

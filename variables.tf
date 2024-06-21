@@ -101,3 +101,70 @@ variable "storage_profile" {
   })
   description = "Specifies the details of the Storage Account."
 }
+
+variable "app_insights" {
+  type = object({
+    name   = string
+    rg_key = string
+  })
+  description = "(Required) The details of app insights for the app services."
+}
+
+variable "app_service_plan" {
+  type = object({
+    name   = string
+    rg_key = string
+  })
+  description = "(Required) The details of the app service plan for the deployment."
+}
+
+variable "worker_count" {
+  type        = number
+  description = "(Optional) The number of Workers (instances) to be allocated."
+  default     = 1
+}
+
+variable "zone_balancing_enabled" {
+  type        = bool
+  description = "(Optional) Should the Service Plan balance across Availability Zones in the region. Changing this forces a new resource to be created."
+  default     = false
+}
+
+variable "log_analytics_workspace" {
+  type = object({
+    name     = string
+    location = string
+    rg_key   = string
+  })
+  description = "Details of log analytics workspace"
+}
+
+variable "frontend" {
+  type = object({
+    name                          = string
+    rg_key                        = string
+    vnet_key                      = string
+    snet_key                      = string
+    env                           = string
+    docker_image_tag              = optional(string, "latest")
+    require_assignment            = optional(bool, false)
+    allowed_origins               = optional(list(string))
+    public_network_access_enabled = optional(bool, false)
+  })
+  description = "(Required) The details of filestore app service."
+}
+
+variable "backend" {
+  type = object({
+    name                          = string
+    rg_key                        = string
+    vnet_key                      = string
+    snet_key                      = string
+    env                           = string
+    docker_image_tag              = optional(string, "latest")
+    require_assignment            = optional(bool, false)
+    allowed_origins               = optional(list(string))
+    public_network_access_enabled = optional(bool, false)
+  })
+  description = "(Required) The details of filestore app service."
+}

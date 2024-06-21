@@ -90,8 +90,8 @@ storage_profile = {
 acr_name = "crappdevuksouth"
 
 private_endpoint = {
-  pe_eus_kv = {
-    name                 = "pe-keyvault-app-dev-uksouth-001"
+  pe_uks_kv = {
+    name                 = "pe-keyvault-app-dev-uks-001"
     rg_key               = "default-uks"
     vnet_key             = "vnet-uks"
     snet_key             = "pe"
@@ -101,8 +101,8 @@ private_endpoint = {
     subresource_names    = ["vault"]
     request_message      = ""
   }
-  pe_eus_storage = {
-    name                 = "pe-storageaccount-app-dev-uksouth-001"
+  pe_uks_storage = {
+    name                 = "pe-storageaccount-app-dev-uks-001"
     rg_key               = "default-uks"
     vnet_key             = "vnet-uks"
     snet_key             = "pe"
@@ -112,8 +112,8 @@ private_endpoint = {
     subresource_names    = ["Blob"]
     request_message      = ""
   }
-  pe_eus_acr = {
-    name                 = "pe-acr-app-dev-uksouth-001"
+  pe_uks_acr = {
+    name                 = "pe-acr-app-dev-uks-001"
     rg_key               = "default-uks"
     vnet_key             = "vnet-uks"
     snet_key             = "pe"
@@ -121,6 +121,28 @@ private_endpoint = {
     resource             = "acr"
     is_manual_connection = false
     subresource_names    = ["registry"]
+    request_message      = ""
+  }
+  pe_uks_front = {
+    name                 = "pe-front-app-dev-uks-001"
+    rg_key               = "default-uks"
+    vnet_key             = "vnet-uks"
+    snet_key             = "pe"
+    dns_key              = "app_dns"
+    resource             = "front_svc"
+    is_manual_connection = false
+    subresource_names    = ["sites"]
+    request_message      = ""
+  }
+  pe_uks_back = {
+    name                 = "pe-back-app-dev-uks-001"
+    rg_key               = "default-uks"
+    vnet_key             = "vnet-uks"
+    snet_key             = "pe"
+    dns_key              = "app_dns"
+    resource             = "back_svc"
+    is_manual_connection = false
+    subresource_names    = ["sites"]
     request_message      = ""
   }
 }
@@ -138,4 +160,47 @@ private_dns = {
     name   = "privatelink.azurecr.io"
     rg_key = "network-uks"
   }
+  app_dns = {
+    name   = "privatelink.azurewebsites.net"
+    rg_key = "network-uks"
+  }
 }
+
+app_insights = {
+  name   = "appinsight-app-dev-uks-001"
+  rg_key = "default-uks"
+}
+
+log_analytics_workspace = {
+  name     = "la-app-dev-uks-001"
+  location = "UK South"
+  rg_key   = "default-uks"
+}
+
+app_service_plan = {
+  name   = "appservice-apps-dev-eastus-001"
+  rg_key = "default-uks"
+}
+
+frontend = {
+  name                          = "front-app-dev-uks-001"
+  rg_key                        = "default-uks"
+  vnet_key                      = "vnet-uks"
+  snet_key                      = "frontend"
+  env                           = "dev"
+  docker_image_tag              = "latest"
+  public_network_access_enabled = false
+  require_assignment            = true
+}
+
+backend = {
+  name                          = "back-app-dev-uks-001"
+  rg_key                        = "default-uks"
+  vnet_key                      = "vnet-uks"
+  snet_key                      = "backend"
+  env                           = "dev"
+  docker_image_tag              = "latest"
+  public_network_access_enabled = false
+  require_assignment            = true
+}
+

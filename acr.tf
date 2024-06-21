@@ -8,8 +8,3 @@ resource "azurerm_container_registry" "this" {
   tags                          = local.tags
 }
 
-resource "azurerm_role_assignment" "acr_pull" {
-  scope                = azurerm_container_registry.this.id
-  role_definition_name = "AcrPush"
-  principal_id         = data.azurerm_client_config.current.client_id
-}

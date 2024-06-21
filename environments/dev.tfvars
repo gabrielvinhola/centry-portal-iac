@@ -83,7 +83,7 @@ storage_profile = {
   account_tier                      = "Standard"
   account_replication_type          = "GRS"
   min_tls_version                   = "TLS1_2"
-  shared_access_key_enabled         = false
+  shared_access_key_enabled         = true
   infrastructure_encryption_enabled = true
 }
 

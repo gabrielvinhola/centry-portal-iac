@@ -59,6 +59,20 @@ vnet_profile = {
         nsg_name                                      = "nsg-pe-app-dev-uks-001"
         nsg_rules                                     = []
       },
+      postgres = {
+        name                                          = "snet-postgres-dev-uks-001"
+        private_link_service_network_policies_enabled = true
+        private_endpoint_network_policies_enabled     = true
+        address_prefixes                              = ["10.68.26.184/28"]
+        delegation = {
+          name = "delegation"
+          service_delegation = {
+            name    = "Microsoft.DBforPostgreSQL/flexibleServers"
+            actions = ["Microsoft.Network/virtualNetworks/subnets/join/action", "Microsoft.Network/virtualNetworks/subnets/prepareNetworkPolicies/action"]
+          }
+        }
+        nsg_name          = "nsg-pgresqlreftable-cyberpqui-dev-eastus2-001"
+        nsg_rules         = []
     }
   }
 }

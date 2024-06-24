@@ -21,5 +21,14 @@ locals {
     kv            = module.keyvaults["kv-app-dev"].azure_key_vault_id
     storage_accnt = module.storage_account.storage_account_id
     acr           = azurerm_container_registry.this.id
+    front_svc     = module.frontend.app_service.id
+    back_svc      = module.backend.app_service.id
   }
+
+  auth_settings = {
+    enabled                       = false
+    token_refresh_extension_hours = 0
+  }
+
+  dns_posgtres = "app-dev"
 }

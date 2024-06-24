@@ -73,9 +73,11 @@ vnet_profile = {
         }
         nsg_name          = "nsg-pgresqlreftable-cyberpqui-dev-eastus2-001"
         nsg_rules         = []
+      }
     }
   }
 }
+
 
 keyvaults = {
   kv-app-dev = {

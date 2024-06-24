@@ -14,7 +14,7 @@ module "postgres_flexible" {
   backup_retention_days           = var.backup_retention_days
   geo_redundant_backup_enabled    = var.geo_redundant_backup_enabled
   virtual_network_id              = module.network["vnet-uks"].vnet_id
-  delegated_subnet_id             = lookup(module.network["vnet-uks"].subnet_id_list, "pe")
+  delegated_subnet_id             = lookup(module.network["vnet-uks"].subnet_id_list, "postgres")
   dnszone_name_prefix             = "${local.dns_posgtres}.${var.location}"
   postgresql_privatednszone_id    = null
 }

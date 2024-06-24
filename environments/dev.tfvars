@@ -23,8 +23,8 @@ vnet_profile = {
     rg_key           = "network-uks"
     routes           = {}
     subnets = {
-      frontend = {
-        name                                          = "snet-frontend-app-dev-uks-001"
+      app_service = {
+        name                                          = "snet-appservice-app-dev-uks-001"
         private_link_service_network_policies_enabled = false
         private_endpoint_network_policies_enabled     = false
         address_prefixes                              = ["10.68.26.0/27"]
@@ -37,31 +37,33 @@ vnet_profile = {
         nsg_name  = "nsg-frontend-app-dev-uks-001"
         nsg_rules = []
       },
-      backend = {
-        name                                          = "snet-backend-app-dev-uks-001"
-        private_link_service_network_policies_enabled = false
-        private_endpoint_network_policies_enabled     = false
-        address_prefixes                              = ["10.68.26.96/28"]
-        delegation = {
-          name = "delegation"
-          service_delegation = {
-            name = "Microsoft.Web/serverFarms"
-          }
-        }
-        nsg_name  = "nsg-backend-app-dev-uks-001"
-        nsg_rules = []
-      },
       pe = {
         name                                          = "snet-pe-dev-uks-001"
         private_link_service_network_policies_enabled = true
         private_endpoint_network_policies_enabled     = true
-        address_prefixes                              = ["10.68.26.176/29"]
+        address_prefixes                              = ["10.68.26.32/27"]
         nsg_name                                      = "nsg-pe-app-dev-uks-001"
         nsg_rules                                     = []
       },
+      postgres = {
+        name                                          = "snet-postgres-dev-uks-001"
+        private_link_service_network_policies_enabled = true
+        private_endpoint_network_policies_enabled     = true
+        address_prefixes                              = ["10.68.26.64/27"]
+        delegation = {
+          name = "delegation"
+          service_delegation = {
+            name    = "Microsoft.DBforPostgreSQL/flexibleServers"
+            actions = ["Microsoft.Network/virtualNetworks/subnets/join/action", "Microsoft.Network/virtualNetworks/subnets/prepareNetworkPolicies/action"]
+          }
+        }
+        nsg_name          = "nsg-pgresqlreftable-cyberpqui-dev-eastus2-001"
+        nsg_rules         = []
+      }
     }
   }
 }
+
 
 keyvaults = {
   kv-app-dev = {
@@ -92,7 +94,7 @@ acr_name = "crappdevuksouth"
 private_endpoint = {
   pe_uks_kv = {
     name                 = "pe-keyvault-app-dev-uks-001"
-    rg_key               = "default-uks"
+    rg_key               = "network-uks"
     vnet_key             = "vnet-uks"
     snet_key             = "pe"
     dns_key              = "kv_dns"
@@ -103,7 +105,7 @@ private_endpoint = {
   }
   pe_uks_storage = {
     name                 = "pe-storageaccount-app-dev-uks-001"
-    rg_key               = "default-uks"
+    rg_key               = "network-uks"
     vnet_key             = "vnet-uks"
     snet_key             = "pe"
     dns_key              = "storage_dns"
@@ -114,7 +116,7 @@ private_endpoint = {
   }
   pe_uks_acr = {
     name                 = "pe-acr-app-dev-uks-001"
-    rg_key               = "default-uks"
+    rg_key               = "network-uks"
     vnet_key             = "vnet-uks"
     snet_key             = "pe"
     dns_key              = "acr_dns"
@@ -125,7 +127,7 @@ private_endpoint = {
   }
   pe_uks_front = {
     name                 = "pe-front-app-dev-uks-001"
-    rg_key               = "default-uks"
+    rg_key               = "network-uks"
     vnet_key             = "vnet-uks"
     snet_key             = "pe"
     dns_key              = "app_dns"
@@ -136,7 +138,7 @@ private_endpoint = {
   }
   pe_uks_back = {
     name                 = "pe-back-app-dev-uks-001"
-    rg_key               = "default-uks"
+    rg_key               = "network-uks"
     vnet_key             = "vnet-uks"
     snet_key             = "pe"
     dns_key              = "app_dns"
@@ -186,7 +188,7 @@ frontend = {
   name                          = "front-app-dev-uks-001"
   rg_key                        = "default-uks"
   vnet_key                      = "vnet-uks"
-  snet_key                      = "frontend"
+  snet_key                      = "app_service"
   env                           = "dev"
   docker_image_tag              = "latest"
   public_network_access_enabled = false
@@ -197,7 +199,7 @@ backend = {
   name                          = "back-app-dev-uks-001"
   rg_key                        = "default-uks"
   vnet_key                      = "vnet-uks"
-  snet_key                      = "backend"
+  snet_key                      = "app_service"
   env                           = "dev"
   docker_image_tag              = "latest"
   public_network_access_enabled = false

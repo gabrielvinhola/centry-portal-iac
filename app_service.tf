@@ -31,7 +31,11 @@ module "frontend" {
 
   allowed_origins = var.frontend.allowed_origins
 
-  app_service_settings = {}
+  app_service_settings = {
+    APPLICATIONINSIGHTS_CONNECTION_STRING = module.app_insights.connection_string
+    APPINSIGHTS_INSTRUMENTATIONKEY = module.app_insights.instrumentation_key
+    ConnectionStrings__AdminDB            = "host=${module.postgres_flexible.postgresql_flexible_fqdn};Database=postgres;Port=5432;Username=${module.postgres_flexible.postgresql_administrator_login};Password=${random_password.pgresqlrisk_administrator_login_password.result};Trust Server Certificate=true"
+  }
 
   log_analytics_destination_type = "AzureDiagnostics"
   tags                           = local.tags

@@ -94,7 +94,7 @@ acr_name = "crappdevuksouth"
 private_endpoint = {
   pe_uks_kv = {
     name                 = "pe-keyvault-app-dev-uks-001"
-    rg_key               = "default-uks"
+    rg_key               = "network-uks"
     vnet_key             = "vnet-uks"
     snet_key             = "pe"
     dns_key              = "kv_dns"
@@ -105,7 +105,7 @@ private_endpoint = {
   }
   pe_uks_storage = {
     name                 = "pe-storageaccount-app-dev-uks-001"
-    rg_key               = "default-uks"
+    rg_key               = "network-uks"
     vnet_key             = "vnet-uks"
     snet_key             = "pe"
     dns_key              = "storage_dns"
@@ -116,7 +116,7 @@ private_endpoint = {
   }
   pe_uks_acr = {
     name                 = "pe-acr-app-dev-uks-001"
-    rg_key               = "default-uks"
+    rg_key               = "network-uks"
     vnet_key             = "vnet-uks"
     snet_key             = "pe"
     dns_key              = "acr_dns"
@@ -127,7 +127,7 @@ private_endpoint = {
   }
   pe_uks_front = {
     name                 = "pe-front-app-dev-uks-001"
-    rg_key               = "default-uks"
+    rg_key               = "network-uks"
     vnet_key             = "vnet-uks"
     snet_key             = "pe"
     dns_key              = "app_dns"
@@ -138,7 +138,7 @@ private_endpoint = {
   }
   pe_uks_back = {
     name                 = "pe-back-app-dev-uks-001"
-    rg_key               = "default-uks"
+    rg_key               = "network-uks"
     vnet_key             = "vnet-uks"
     snet_key             = "pe"
     dns_key              = "app_dns"

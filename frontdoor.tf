@@ -65,12 +65,12 @@ module "cdn_frontdoor_dev" {
 }
 
 
-resource "azapi_update_resource" "dev_frontdoor_system_identity" {
-  type        = "Microsoft.Cdn/profiles@2023-02-01-preview"
-  resource_id = module.cdn_frontdoor_dev.profile_id
-  body = jsonencode({
-    "identity" : {
-      "type" : "SystemAssigned"
-    }
-  })
-}
+# resource "azapi_update_resource" "dev_frontdoor_system_identity" {
+#   type        = "Microsoft.Cdn/profiles@2023-02-01-preview"
+#   resource_id = module.cdn_frontdoor_dev.profile_id
+#   body = jsonencode({
+#     "identity" : {
+#       "type" : "SystemAssigned"
+#     }
+#   })
+# }

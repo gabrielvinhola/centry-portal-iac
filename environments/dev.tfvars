@@ -57,8 +57,8 @@ vnet_profile = {
             actions = ["Microsoft.Network/virtualNetworks/subnets/join/action", "Microsoft.Network/virtualNetworks/subnets/prepareNetworkPolicies/action"]
           }
         }
-        nsg_name          = "nsg-pgresqlreftable-cyberpqui-dev-eastus2-001"
-        nsg_rules         = []
+        nsg_name  = "nsg-pgresqlreftable-cyberpqui-dev-eastus2-001"
+        nsg_rules = []
       }
     }
   }
